@@ -4,5 +4,13 @@
 #purpose: Delete  Citrix Profile and Clean Temp files
 #Version: 0.0.1
 ######################
-echo "we Clean the Temp files"
-Remove-Item  'C:\Windows\Temp\*' –force  
+
+stop-Process -processname iexplore  
+stop-Process -processname wfcrun32
+stop-Process -processname concentr
+stop-Process -processname wfica32
+stop-Process -processname redirector
+stop-Process -processname Receiver
+$user = $env:UserName
+$INPUT = '$user: '
+dir \\shebafs\Xenapp$\ProdFarm2012\UPM\ | findstr /i /r $user 
