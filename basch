@@ -1,0 +1,80 @@
+@echo OFF
+
+rem del /q/f/s %TEMP%\*
+rem cscript.exe //B \\sbxpap15a\script$\SUS\BitsBgiProd2.vbs
+
+
+taskkill /F /IM iexplore.exe
+
+echo.
+echo Killing citrix.
+taskkill /f /im Receiver.exe
+taskkill /f /im wfcrun32.exe
+taskkill /f /im concentr.exe
+taskkill /f /im wfica32.exe
+taskkill /f /im redirector.exe
+
+
+SET USER=%username%
+SET REMOVED=0
+::Remove spaces
+SET INPUT=%USER: =%
+
+::NEW CITRIX PROFILE
+
+echo Searching %USER% in \\shebafs\Xenapp$\ProdFarm2012\UPM...
+rem dir \\shebafs\CitrixProdPRF$ | findstr /i /r "\<%input%\>" > C:\Temp\result.txt
+dir \\shebafs\Xenapp$\ProdFarm2012\UPM | findstr /i /r "\<%input%\>"
+
+
+SET REMOVED=1
+echo Deleting %USER% from \\shebafs\Xenapp$\ProdFarm2012\UPM...
+rem for /f "tokens=4" %%i in (C:\Temp\result.txt) do RD /S /Q \\shebafs\CitrixProdPRF$\%INPUT%.upm
+RD /S /Q \\shebafs\Xenapp$\ProdFarm2012\UPM\%INPUT%.upm
+
+
+
+echo Searching %USER% in \\shebafs\Xenapp$\ProdFarm2012\UPM...
+rem dir \\shebafs\CitrixProd45PRF$ | findstr /i /r "\<%input%\>" > C:\Temp\result2.txt
+dir \\shebafs\Xenapp$\ProdFarm2012\UPM | findstr /i /r "\<%input%\>"
+
+
+
+SET REMOVED=1
+echo Deleting %USER% from \\shebafs\Xenapp$\ProdFarm2012\UPM...
+rem for /f "tokens=4" %%i in (C:\Temp\result2.txt) do RD /S /Q \\shebafs\CitrixProd45PRF$\%INPUT%.upm
+RD /S /Q \\shebafs\Xenapp$\ProdFarm2012\UPM\%INPUT%.upm
+
+::OLD CITRIX PROFILE
+
+echo Searching %USER% in \\shebafs\CitrixProdPRF$...
+rem dir \\shebafs\CitrixProdPRF$ | findstr /i /r "\<%input%\>" > C:\Temp\result.txt
+dir \\shebafs\CitrixProdPRF$ | findstr /i /r "\<%input%\>"
+
+
+
+SET REMOVED=1
+echo Deleting %USER% from \\shebafs\CitrixProdPRF$...
+rem for /f "tokens=4" %%i in (C:\Temp\result.txt) do RD /S /Q \\shebafs\CitrixProdPRF$\%INPUT%.upm
+RD /S /Q \\shebafs\CitrixProdPRF$\%INPUT%.upm
+
+
+
+echo Searching %USER% in \\shebafs\CitrixProd45PRF$...
+rem dir \\shebafs\CitrixProd45PRF$ | findstr /i /r "\<%input%\>" > C:\Temp\result2.txt
+dir \\shebafs\CitrixProd45PRF$ | findstr /i /r "\<%input%\>"
+
+
+SET REMOVED=1
+echo Deleting %USER% from \\shebafs\CitrixProd45PRF$...
+rem for /f "tokens=4" %%i in (C:\Temp\result2.txt) do RD /S /Q \\shebafs\CitrixProd45PRF$\%INPUT%.upm
+RD /S /Q \\shebafs\CitrixProd45PRF$\%INPUT%.upm
+
+
+
+echo.
+ECHO Removing ICAClient directory.
+echo y | del %AppData%\ICAClient\*.*
+cleanmgr 
+gpupdate /force
+exit
