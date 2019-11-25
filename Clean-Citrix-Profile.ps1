@@ -13,4 +13,4 @@ stop-Process -processname redirector
 stop-Process -processname Receiver
 $user = $env:UserName
 $INPUT = '$user: '
-dir \\shebafs\Xenapp$\ProdFarm2012\UPM\ | findstr /i /r $user 
+cd \\shebafs\Xenapp$\ProdFarm2012\UPM\ | findstr /i /r $user 
