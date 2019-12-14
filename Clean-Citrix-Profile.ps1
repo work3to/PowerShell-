@@ -5,6 +5,7 @@
 #Version: 0.0.1
 ######################
 
+# close process 
 stop-Process -processname iexplore  
 stop-Process -processname wfcrun32
 stop-Process -processname concentr
